@@ -63,3 +63,22 @@ function rho_to_fit_growth(e,g,l,w,growth_target)
 
     return 1/e * (group_1 - group_2 - (1-e)*(group_1 - group_3 - group_4) - growth_target)
 end
+
+
+# IV. Apply functions to obtain tables and figures:
+
+
+# Table I: Parameters used in the calibration (main specification).
+g = 3.0
+e = 1+1e-09
+a = 0.069
+w_1 = 0.948
+w_2 = 0.85
+w_3 = 0.60
+l_1 = 0.0307
+l_2 = 0.01064
+l_3 = 0.003991
+d = 1.0
+s = 0.02
+u = 0.25
+growth_target = 0.0175
