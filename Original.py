@@ -153,87 +153,86 @@ if table_2 == True:
 
 # Table III: Marginal rate of substitution between proportionate changes in GDP and in disaster probability.
 #if table_3 == True:
-#    for gamma in [1+1e-09, 3, 5, 10]:
-#        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-#        print 'with g=', gamma, ', w=', w_1, 'and l=', l_1, ':', mrt_lambda_gdp(e,gamma,l_1,w_1)
-#        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-#        print 'with g=', gamma, ', w=', w_2, 'and l=', l_2, ':', mrt_lambda_gdp(e,gamma,l_2,w_2)
-#        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-#        print 'with g=', gamma, ', w=', w_3, 'and l=', l_3, ':', mrt_lambda_gdp(e,gamma,l_3,w_3)
-#
-#
-## Table IV: Marginal rate of substitution between proportionate changes in GDP and in disaster intensity.
-#if table_4 == True:
-#    for gamma in [1+1e-09, 3, 5, 10]:
-#        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-#        print 'with g=', gamma, ', w=', w_1, 'and l=', l_1, ':', mrt_omega_gdp(e,gamma,l_1,w_1)
-#        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-#        print 'with g=', gamma, ', w=', w_2, 'and l=', l_2, ':', mrt_omega_gdp(e,gamma,l_2,w_2)
-#        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-#        print 'with g=', gamma, ', w=', w_3, 'and l=', l_3, ':', mrt_omega_gdp(e,gamma,l_3,w_3)
-#
-#
-## Table V: Optimal share of income spent in policy instrument.
-#if table_5 == True:
-#    for gamma in [1+1e-09, 3, 5, 10]:
-#        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-#        print 'with g=', gamma, ', w=', w_1, 'and l=', l_1, ':', tau(e,gamma,l_1,w_1)*100, '%'
-#        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-#        print 'with g=', gamma, ', w=', w_2, 'and l=', l_2, ':', tau(e,gamma,l_2,w_2)*100, '%'
-#        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-#        print 'with g=', gamma, ', w=', w_3, 'and l=', l_3, ':', tau(e,gamma,l_3,w_3)*100, '%'
-#
-#
-## Table VI: Welfare benefits of the policy.
-#if table_6 == True:
-#    for gamma in [1+1e-09, 3, 5, 10]:
-#        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-#        print 'with g=', gamma, ', w=', w_1, 'and l=', l_1, ':', lucas_measure(e,gamma,l_1,w_1)*100, '%'
-#        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-#        print 'with g=', gamma, ', w=', w_2, 'and l=', l_2, ':', lucas_measure(e,gamma,l_2,w_2)*100, '%'
-#        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-#        print 'with g=', gamma, ', w=', w_3, 'and l=', l_3, ':', lucas_measure(e,gamma,l_3,w_3)*100, '%'
-#
-#
-## Table VII : Calibration of time impatience to match a 1.75% expected growth rate.
-#if table_7 == True:
-#    for gamma in [1+1e-09, 3, 5, 10]:
-#        for epsilon in [float(1)/3, 1+1e-09, 1.5]:
-#            r = rho_to_fit_growth(epsilon,gamma,l_1,w_1,growth_target)
-#            print 'with g=', gamma, 'and e=', epsilon, ', w=', w_1, 'and l=', l_1, ':', r
-#            r = rho_to_fit_growth(epsilon,gamma,l_2,w_2,growth_target)
-#            print 'with g=', gamma, 'and e=', epsilon, ', w=', w_2, 'and l=', l_2, ':', r
-#            r = rho_to_fit_growth(epsilon,gamma,l_3,w_3,growth_target)
-#            print 'with g=', gamma, 'and e=', epsilon, ', w=', w_3, 'and l=', l_3, ':', r
-#
-#
-## Figure 1: Difference between long-run growth in a disaster vs. disaster free economy.
-#if figure_1 == True:
-#    # Create the grid
-#    e_inverse = 1/(arange(4,1,-0.01) - 0.001)
-#    e_normal = arange(1,3,0.01) + 0.001
-#    e = np.concatenate([e_inverse,e_normal])
-#    g = arange(6,1,-0.01) + 0.005
-#    E,G = meshgrid(e, g)
-#    r = 0 # r plays no role here. It is necessary to compute expected growth with and wihout disasters
-#    # but it cancels out when we take the difference.
-#
-#    # Prepare axes
-#    axe_g = ['6', '5', '4', '3', '2', '1']
-#    axe_e = ['1/4', '1/3', '1/2', '1', '2', '3']
-#
-#    # Build heatmap - choose scenario by selection (l_1,w_1), (l_2,w_2) or (l_3,w_3)
-#    values_heatmap = effect_disasters_expected_growth(E, G, l_1, w_1)
-#
-#    fig, ax = plt.subplots()
-#    heatmap_expected_growth = ax.imshow(
-#        values_heatmap, norm=norm, cmap=plt.cm.seismic, extent = [0,10,10,0], interpolation='none'
-#        )
-#    ax.set_xticklabels(axe_e)
-#    ax.set_yticklabels(axe_g)
-#    plt.xlabel('IES')
-#    plt.ylabel('RRA')
-#    cbar = plt.colorbar(heatmap_expected_growth)
-#    cbar.set_label('percentage points')
-#    plt.show()
-#
+    for gamma in [1+1e-09, 3, 5, 10]:
+        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+        print 'with g=', gamma, ', w=', w_1, 'and l=', l_1, ':', mrt_lambda_gdp(e,gamma,l_1,w_1)
+        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        print 'with g=', gamma, ', w=', w_2, 'and l=', l_2, ':', mrt_lambda_gdp(e,gamma,l_2,w_2)
+        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        print 'with g=', gamma, ', w=', w_3, 'and l=', l_3, ':', mrt_lambda_gdp(e,gamma,l_3,w_3)
+
+
+# Table IV: Marginal rate of substitution between proportionate changes in GDP and in disaster intensity.
+if table_4 == True:
+    for gamma in [1+1e-09, 3, 5, 10]:
+        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+        print 'with g=', gamma, ', w=', w_1, 'and l=', l_1, ':', mrt_omega_gdp(e,gamma,l_1,w_1)
+        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        print 'with g=', gamma, ', w=', w_2, 'and l=', l_2, ':', mrt_omega_gdp(e,gamma,l_2,w_2)
+        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        print 'with g=', gamma, ', w=', w_3, 'and l=', l_3, ':', mrt_omega_gdp(e,gamma,l_3,w_3)
+
+
+# Table V: Optimal share of income spent in policy instrument.
+if table_5 == True:
+    for gamma in [1+1e-09, 3, 5, 10]:
+        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+        print 'with g=', gamma, ', w=', w_1, 'and l=', l_1, ':', tau(e,gamma,l_1,w_1)*100, '%'
+        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        print 'with g=', gamma, ', w=', w_2, 'and l=', l_2, ':', tau(e,gamma,l_2,w_2)*100, '%'
+        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        print 'with g=', gamma, ', w=', w_3, 'and l=', l_3, ':', tau(e,gamma,l_3,w_3)*100, '%'
+
+
+# Table VI: Welfare benefits of the policy.
+if table_6 == True:
+    for gamma in [1+1e-09, 3, 5, 10]:
+        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+        print 'with g=', gamma, ', w=', w_1, 'and l=', l_1, ':', lucas_measure(e,gamma,l_1,w_1)*100, '%'
+        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        print 'with g=', gamma, ', w=', w_2, 'and l=', l_2, ':', lucas_measure(e,gamma,l_2,w_2)*100, '%'
+        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        print 'with g=', gamma, ', w=', w_3, 'and l=', l_3, ':', lucas_measure(e,gamma,l_3,w_3)*100, '%'
+
+
+# Table VII : Calibration of time impatience to match a 1.75% expected growth rate.
+if table_7 == True:
+    for gamma in [1+1e-09, 3, 5, 10]:
+        for epsilon in [float(1)/3, 1+1e-09, 1.5]:
+            r = rho_to_fit_growth(epsilon,gamma,l_1,w_1,growth_target)
+            print 'with g=', gamma, 'and e=', epsilon, ', w=', w_1, 'and l=', l_1, ':', r
+            r = rho_to_fit_growth(epsilon,gamma,l_2,w_2,growth_target)
+            print 'with g=', gamma, 'and e=', epsilon, ', w=', w_2, 'and l=', l_2, ':', r
+            r = rho_to_fit_growth(epsilon,gamma,l_3,w_3,growth_target)
+            print 'with g=', gamma, 'and e=', epsilon, ', w=', w_3, 'and l=', l_3, ':', r
+
+
+# Figure 1: Difference between long-run growth in a disaster vs. disaster free economy.
+if figure_1 == True:
+    # Create the grid
+    e_inverse = 1/(arange(4,1,-0.01) - 0.001)
+    e_normal = arange(1,3,0.01) + 0.001
+    e = np.concatenate([e_inverse,e_normal])
+    g = arange(6,1,-0.01) + 0.005
+    E,G = meshgrid(e, g)
+    r = 0 # r plays no role here. It is necessary to compute expected growth with and wihout disasters
+    # but it cancels out when we take the difference.
+
+    # Prepare axes
+    axe_g = ['6', '5', '4', '3', '2', '1']
+    axe_e = ['1/4', '1/3', '1/2', '1', '2', '3']
+
+    # Build heatmap - choose scenario by selection (l_1,w_1), (l_2,w_2) or (l_3,w_3)
+    values_heatmap = effect_disasters_expected_growth(E, G, l_1, w_1)
+
+    fig, ax = plt.subplots()
+    heatmap_expected_growth = ax.imshow(
+        values_heatmap, norm=norm, cmap=plt.cm.seismic, extent = [0,10,10,0], interpolation='none'
+        )
+    ax.set_xticklabels(axe_e)
+    ax.set_yticklabels(axe_g)
+    plt.xlabel('IES')
+    plt.ylabel('RRA')
+    cbar = plt.colorbar(heatmap_expected_growth)
+    cbar.set_label('percentage points')
+    plt.show()

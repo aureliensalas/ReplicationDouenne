@@ -95,6 +95,46 @@ f1 = button("Figure 1")
 
 showtb2 = on(n -> println("Salas"),tb2)
 
+# Table V: Optimal share of income spent in policy instrument.
+function table5()
+    for gamma in [1+1e-09, 3, 5, 10]:
+        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+        tau1 = tau(e,gamma,l_1,w_1)*100
+        print("with g=$gamma, w= $w_1 and l= $l_1 : $tau1 %")
+        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        tau2 = tau(e,gamma,l_2,w_2)*100
+        print("with g=$gamma, w= $w_2 and l= $l_2: $tau2 %")
+        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        tau3 = tau(e,gamma,l_3,w_3)*100
+        print("with g= $gamma, w= $w_3 and l= $l_3: $tau3 %")
+
+
+# Table VI: Welfare benefits of the policy.
+function table6()
+    for gamma in [1+1e-09, 3, 5, 10]:
+        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+        luc1 = lucas_measure(e,gamma,l_1,w_1)*100
+        print("with g= $gamma, w= $w_1 and l= $l_1 : $luc1 %")
+        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        luc2 = lucas_measure(e,gamma,l_2,w_2)*100
+        print("with g= $gamma, w= $w_2 and l= $l_2 : $luc2 %")
+        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        luc3 = lucas_measure(e,gamma,l_3,w_3)*100
+        print("with g= $gamma, w= $w_3 and l= $l_3 : $luc3 %")
+
+
+# Table VII : Calibration of time impatience to match a 1.75% expected growth rate.
+function table7()
+    for gamma in [1+1e-09, 3, 5, 10]:
+        for epsilon in [float(1)/3, 1+1e-09, 1.5]:
+            r = rho_to_fit_growth(epsilon,gamma,l_1,w_1,growth_target)
+            print("with g= $gamma and e= $epsilon, w= $w_1 and l= $l_1 : $r")
+            r = rho_to_fit_growth(epsilon,gamma,l_2,w_2,growth_target)
+            print("with g= $gamma and e= $epsilon, w= $w_2 and l= $l_2 : $r")
+            r = rho_to_fit_growth(epsilon,gamma,l_3,w_3,growth_target)
+            print("with g= $gamma and e= $epsilon, w= $w_3 and l= $l_3 : $r")
+
+
 ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
     pad(["left"],6.9em, hbox()),
