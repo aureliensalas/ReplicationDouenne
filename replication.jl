@@ -84,6 +84,7 @@ d = 1.0
 s = 0.02
 u = 0.25
 growth_target = 0.0175
+r = 0
 
 tb2 = button("Table 2")
 tb3 = button("Table 3")
@@ -94,95 +95,94 @@ tb7 = button("Table 7")
 f1 = button("Figure 1")
 
 function table2() 
-    for (l,w,scenario) in [(l_1,w_1,"moderate"),(l_2,w_2,"large"),(l_3,w_3,"extreme")]:
-    r = rho_to_fit_growth(e,g,l,w,growth_target)
-    fpsi = psi(e,g,l,w)/a*100
-    ftau = tau(e,g,l,w)*100
-    ftau2 = tau(e,g,l,w)^(u*100)
-    fexp = expected_growth(e,g,l,w)*100
-    fexp2 = l*(1-(tau(e,g,l,w))^u)*(1-w)*100
-    print("For $scenario, disasters:")
-    print("Share of production consumed: $fpsi % ")
-    print("Share of production in risk-mitigation:', $ftau  % ")
-    print("Reduction in prob. of an env. disaster:, $ftau2  % ")
-    print("Expected growth: , $fexp % ")
-    print("Expected aggregate damages from env. dis. (per year): $fexp2 % ")
+    for (l,w,scenario) in [(l_1,w_1,"moderate"),(l_2,w_2,"large"),(l_3,w_3,"extreme")]
+        global r = rho_to_fit_growth(e,g,l,w,growth_target)
+        fpsi = psi(e,g,l,w)/a*100
+        ftau = tau(e,g,l,w)*100
+        ftau2 = tau(e,g,l,w)^(u*100)
+        fexp = expected_growth(e,g,l,w)*100
+        fexp2 = l*(1-(tau(e,g,l,w))^u)*(1-w)*100
+        print("For $scenario scenario, disasters: \n") 
+        print("")
+        print("Share of production consumed: $fpsi % \n")
+        print("Share of production in risk-mitigation:', $ftau  % \n")
+        print("Reduction in prob. of an env. disaster:, $ftau2  % \n")
+        print("Expected growth: , $fexp % \n")
+        print("Expected aggregate damages from env. dis. (per year): $fexp2 % \n")
     end 
 end 
 
 
 function table3() 
-    for gamma in [1+1e-09, 3, 5, 10]:
-    r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-    mrt1 = mrt_lambda_gdp(e,gamma,l_1,w_1) 
-    print("with g= $gamma, w= $w_1, and l= $l_1, , $mrt")
-    r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-    mrt2 = mrt_lambda_gdp(e,gamma,l_2,w_2)
-    print("with g= $gamma, w= $w_2, and l= $l_2, : $mrt2")
-    r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-    mrt3 = mrt_lambda_gdp(e,gamma,l_3,w_3)
-    print("with g= $gamma, w=, $w_3, and l= $l_3, : $mrt3")
+    for gamma in [1+1e-09, 3, 5, 10]
+        global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+        mrt1 = mrt_lambda_gdp(e,gamma,l_1,w_1) 
+        print("with g= $gamma, w= $w_1, and l= $l_1, , $mrt1 \n")
+        global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        mrt2 = mrt_lambda_gdp(e,gamma,l_2,w_2)
+        print("with g= $gamma, w= $w_2, and l= $l_2, : $mrt2 \n")
+        global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        mrt3 = mrt_lambda_gdp(e,gamma,l_3,w_3)
+        print("with g= $gamma, w=, $w_3, and l= $l_3, : $mrt3 \n")
     end 
 end 
 
-show_tb2 = on(n -> println("Salas"),tb2)
-showtb2 = on(n -> println("Salas"),tb2)
 # Table IV: Marginal rate of substitution between proportionate changes in GDP and in disaster intensity.
 function table4()
-    for gamma in [1+1e-09, 3, 5, 10]:
-        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+    for gamma in [1+1e-09, 3, 5, 10]
+        global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
         mrt1 = mrt_omega_gdp(e,gamma,l_1,w_1)
-        print("with g= $gamma, w= $w_1 and l= $l_1: $mrt1")
-        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        print("with g= $gamma, w= $w_1 and l= $l_1: $mrt1 \n")
+        global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
         mrt2 = mrt_omega_gdp(e,gamma,l_2,w_2)
-        print("with g= $gamma, w= $w_2 and l= $l_2: $mrt2")
-        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        print("with g= $gamma, w= $w_2 and l= $l_2: $mrt2 \n")
+        global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
         mrt3 = mrt_omega_gdp(e,gamma,l_3,w_3)
-        print("with g= $gamma, w= $w_3 and l= $l_3: $mrt3")
+        print("with g= $gamma, w= $w_3 and l= $l_3: $mrt3 \n")
     end 
 end
 
 
 # Table V: Optimal share of income spent in policy instrument.
 function table5()
-    for gamma in [1+1e-09, 3, 5, 10]:
-        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+    for gamma in [1+1e-09, 3, 5, 10]
+        global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
         tau1 = tau(e,gamma,l_1,w_1)*100
-        print("with g=$gamma, w= $w_1 and l= $l_1 : $tau1 %")
-        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        print("with g=$gamma, w= $w_1 and l= $l_1 : $tau1 % \n")
+        global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
         tau2 = tau(e,gamma,l_2,w_2)*100
-        print("with g=$gamma, w= $w_2 and l= $l_2: $tau2 %")
-        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        print("with g=$gamma, w= $w_2 and l= $l_2: $tau2 % \n")
+        global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
         tau3 = tau(e,gamma,l_3,w_3)*100
-        print("with g= $gamma, w= $w_3 and l= $l_3: $tau3 %")
+        print("with g= $gamma, w= $w_3 and l= $l_3: $tau3 % \n")
     end
 end 
 
 # Table VI: Welfare benefits of the policy.
 function table6()
-    for gamma in [1+1e-09, 3, 5, 10]:
-        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+    for gamma in [1+1e-09, 3, 5, 10]
+        global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
         luc1 = lucas_measure(e,gamma,l_1,w_1)*100
-        print("with g= $gamma, w= $w_1 and l= $l_1 : $luc1 %")
-        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        print("with g= $gamma, w= $w_1 and l= $l_1 : $luc1 % \n")
+        global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
         luc2 = lucas_measure(e,gamma,l_2,w_2)*100
-        print("with g= $gamma, w= $w_2 and l= $l_2 : $luc2 %")
-        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        print("with g= $gamma, w= $w_2 and l= $l_2 : $luc2 % \n")
+        global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
         luc3 = lucas_measure(e,gamma,l_3,w_3)*100
-        print("with g= $gamma, w= $w_3 and l= $l_3 : $luc3 %")
+        print("with g= $gamma, w= $w_3 and l= $l_3 : $luc3 % \n")
     end 
 end 
 
 # Table VII : Calibration of time impatience to match a 1.75% expected growth rate.
 function table7()
-    for gamma in [1+1e-09, 3, 5, 10]:
-        for epsilon in [float(1)/3, 1+1e-09, 1.5]:
-            r = rho_to_fit_growth(epsilon,gamma,l_1,w_1,growth_target)
-            print("with g= $gamma and e= $epsilon, w= $w_1 and l= $l_1 : $r")
-            r = rho_to_fit_growth(epsilon,gamma,l_2,w_2,growth_target)
-            print("with g= $gamma and e= $epsilon, w= $w_2 and l= $l_2 : $r")
-            r = rho_to_fit_growth(epsilon,gamma,l_3,w_3,growth_target)
-            print("with g= $gamma and e= $epsilon, w= $w_3 and l= $l_3 : $r")
+    for gamma in [1+1e-09, 3, 5, 10]
+        for epsilon in [float(1)/3, 1+1e-09, 1.5]
+            global r = rho_to_fit_growth(epsilon,gamma,l_1,w_1,growth_target)
+            print("with g= $gamma and e= $epsilon, w= $w_1 and l= $l_1 : $r \n")
+            global r = rho_to_fit_growth(epsilon,gamma,l_2,w_2,growth_target)
+            print("with g= $gamma and e= $epsilon, w= $w_2 and l= $l_2 : $r \n")
+            global r = rho_to_fit_growth(epsilon,gamma,l_3,w_3,growth_target)
+            print("with g= $gamma and e= $epsilon, w= $w_3 and l= $l_3 : $r \n")
         end 
     end 
 end 
@@ -193,6 +193,16 @@ ui = vbox( # put things one on top of the other
     
 )
 
+show_tb2 = on(n -> table2(),tb2) 
+show_tb3 = on(n -> table3(),tb3) 
+show_tb4 = on(n -> table4(),tb4) 
+show_tb5 = on(n -> table5(),tb5) 
+show_tb6 = on(n -> table6(),tb6) 
+show_tb7 = on(n -> table7(),tb7)  
+
+
+
 w = Window() 
 
 body!(w,ui)
+
