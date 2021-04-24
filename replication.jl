@@ -4,6 +4,7 @@
 # I. Import packages
 using Plots
 
+
 function tau(e,g,l,w)
     return (((1-w^(1-g))*l*u)/(a*(1-g)))^(1/(1-u))
 
@@ -67,7 +68,8 @@ end
 
 # IV. Apply functions to obtain tables and figures:
 
-
+using Interact 
+using Blink 
 # Table I: Parameters used in the calibration (main specification).
 g = 3.0
 e = 1+1e-09
@@ -82,3 +84,23 @@ d = 1.0
 s = 0.02
 u = 0.25
 growth_target = 0.0175
+
+tb2 = button("Table 2")
+tb3 = button("Table 3")
+tb4 = button("Table 4")
+tb5 = button("Table 5")
+tb6 = button("Table 6")
+tb7 = button("Table 7")
+f1 = button("Figure 1")
+
+showtb2 = on(n -> println("Salas"),tb2)
+
+ui = vbox( # put things one on top of the other
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
+    pad(["left"],6.9em, hbox()),
+    
+)
+
+w = Window() 
+
+body!(w,ui)
