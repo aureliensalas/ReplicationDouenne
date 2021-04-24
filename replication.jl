@@ -94,6 +94,19 @@ tb7 = button("Table 7")
 f1 = button("Figure 1")
 
 showtb2 = on(n -> println("Salas"),tb2)
+# Table IV: Marginal rate of substitution between proportionate changes in GDP and in disaster intensity.
+function table4()
+    for gamma in [1+1e-09, 3, 5, 10]:
+        r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+        mrt1 = mrt_omega_gdp(e,gamma,l_1,w_1)
+        print("with g= $gamma, w= $w_1 and l= $l_1: $mrt1")
+        r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+        mrt2 = mrt_omega_gdp(e,gamma,l_2,w_2)
+        print("with g= $gamma, w= $w_2 and l= $l_2: $mrt2")
+        r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        mrt3 = mrt_omega_gdp(e,gamma,l_3,w_3)
+        print("with g= $gamma, w= $w_3 and l= $l_3: $mrt3")
+
 
 # Table V: Optimal share of income spent in policy instrument.
 function table5()
