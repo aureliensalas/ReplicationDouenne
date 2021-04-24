@@ -106,6 +106,8 @@ function table4()
         r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
         mrt3 = mrt_omega_gdp(e,gamma,l_3,w_3)
         print("with g= $gamma, w= $w_3 and l= $l_3: $mrt3")
+    end 
+end
 
 
 # Table V: Optimal share of income spent in policy instrument.
@@ -120,7 +122,8 @@ function table5()
         r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
         tau3 = tau(e,gamma,l_3,w_3)*100
         print("with g= $gamma, w= $w_3 and l= $l_3: $tau3 %")
-
+    end
+end 
 
 # Table VI: Welfare benefits of the policy.
 function table6()
@@ -134,7 +137,8 @@ function table6()
         r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
         luc3 = lucas_measure(e,gamma,l_3,w_3)*100
         print("with g= $gamma, w= $w_3 and l= $l_3 : $luc3 %")
-
+    end 
+end 
 
 # Table VII : Calibration of time impatience to match a 1.75% expected growth rate.
 function table7()
@@ -146,7 +150,9 @@ function table7()
             print("with g= $gamma and e= $epsilon, w= $w_2 and l= $l_2 : $r")
             r = rho_to_fit_growth(epsilon,gamma,l_3,w_3,growth_target)
             print("with g= $gamma and e= $epsilon, w= $w_3 and l= $l_3 : $r")
-
+        end 
+    end 
+end 
 
 ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
