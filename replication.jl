@@ -112,6 +112,16 @@ function table2()
     end 
 end 
 
+function output2(w)
+    global ui = vbox( # put things one on top of the other
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
+    pad(["left"],1em, hbox(latex("\\begin{tabular}
+    \\delta"))),
+    )
+    body!(w, ui)
+end
+
+
 
 function table3() 
     result = list()
@@ -132,9 +142,9 @@ function table3()
     return result
 end
 
-function output3()
+function output3(w)
     result = table3()
-    ui = vbox(
+    global ui = vbox(
         hbox(),
         hbox(latex())
     ) 
@@ -143,7 +153,7 @@ end
 
 
 # Table IV: Marginal rate of substitution between proportionate changes in GDP and in disaster intensity.
-function table4(w)
+function table4()
     result = list()
     for gamma in [1+1e-09, 3, 5, 10]
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
@@ -162,9 +172,9 @@ function table4(w)
     return result
 end
 
-function output4()
+function output4(w)
     result = table4()
-    ui = vbox(
+    global ui = vbox(
         hbox(),
         hbox(latex())
     ) 
@@ -191,9 +201,9 @@ function table5()
     end
 end 
 
-function output5()
+function output5(w)
     result = table3()
-    ui = vbox(
+    global ui = vbox(
         hbox(),
         hbox(latex())
     ) 
@@ -201,7 +211,7 @@ function output5()
 end
 
 # Table VI: Welfare benefits of the policy.
-function table6(w)
+function table6()
     for gamma in [1+1e-09, 3, 5, 10]
         result = list()
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
@@ -219,9 +229,9 @@ function table6(w)
     end 
     return result
 end 
-function output6()
+function output6(w)
     result = table3()
-    ui = vbox(
+    global ui = vbox(
         hbox(),
         hbox(latex())
     ) 
@@ -229,7 +239,7 @@ function output6()
 end
 
 # Table VII : Calibration of time impatience to match a 1.75% expected growth rate.
-function table7(w)
+function table7()
     for gamma in [1+1e-09, 3, 5, 10]
         for epsilon in [float(1)/3, 1+1e-09, 1.5]
             global r = rho_to_fit_growth(epsilon,gamma,l_1,w_1,growth_target)
@@ -242,18 +252,21 @@ function table7(w)
     end 
 end 
 
+function output7(w)
+end
+
 ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
     pad(["left"],6.9em, hbox()),
     
 )
 
-show_tb2 = on(n -> table2(),tb2) 
-show_tb3 = on(n -> table3(),tb3) 
-show_tb4 = on(n -> table4(),tb4) 
-show_tb5 = on(n -> table5(),tb5) 
-show_tb6 = on(n -> table6(),tb6) 
-show_tb7 = on(n -> table7(),tb7)  
+show_tb2 = on(n -> output2(w),tb2) 
+show_tb3 = on(n -> output3(),tb3) 
+show_tb4 = on(n -> output4(),tb4) 
+show_tb5 = on(n -> output5(),tb5) 
+show_tb6 = on(n -> output6(),tb6) 
+show_tb7 = on(n -> output7(),tb7)  
 
 
 
