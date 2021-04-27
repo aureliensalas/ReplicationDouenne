@@ -253,19 +253,49 @@ end
 
 # Table VII : Calibration of time impatience to match a 1.75% expected growth rate.
 function table7()
-    for gamma in [1+1e-09, 3, 5, 10]
-        for epsilon in [float(1)/3, 1+1e-09, 1.5]
-            global r = rho_to_fit_growth(epsilon,gamma,l_1,w_1,growth_target)
-            print("with g= $gamma and e= $epsilon, w= $w_1 and l= $l_1 : $r \n")
-            global r = rho_to_fit_growth(epsilon,gamma,l_2,w_2,growth_target)
-            print("with g= $gamma and e= $epsilon, w= $w_2 and l= $l_2 : $r \n")
-            global r = rho_to_fit_growth(epsilon,gamma,l_3,w_3,growth_target)
-            print("with g= $gamma and e= $epsilon, w= $w_3 and l= $l_3 : $r \n")
-        end 
+    result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
+    result2 = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
+    result3 = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
+    for epsilon in [1/3, 1+1e-09, 1.5]
+        for gamma in [1+1e-09, 3, 5, 10]
+            r1 = round(rho_to_fit_growth(epsilon,gamma,l_1,w_1,growth_target); digits = 3)
+            r2 = round(rho_to_fit_growth(epsilon,gamma,l_2,w_2,growth_target);digits =3)
+            r3 = round(rho_to_fit_growth(epsilon,gamma,l_3,w_3,growth_target);digits=3)
+            a2 = ["$r1","$r2","$r3"]
+            gamma_h = Int(round(gamma))
+            if gamma_h == 1 
+                colname = "γ → 1"
+            else 
+                colname = "γ = $gamma_h"
+            end
+            if epsilon == 1/3 
+                columns = size(result)[2]
+                res = result
+            elseif epsilon == 1+1e-09 
+                columns = size(result2)[2]
+                res = result2
+            else 
+                columns = size(result3)[2]
+                res = result3 
+            end 
+            insertcols!(res,columns+1,colname=>a2)
+        end  
     end 
+    return [result, result2, result3]
 end 
 
 function output7(w)
+    result = table7()
+    ui = vbox( # put things one on top of the other
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = \\frac{1}{3}")),)),
+    pad(["top"],0.2em, showtable(result[1])),
+    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon → 1")),)),
+    pad(["top"],0.2em, showtable(result[2])),
+    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = 1.5")),)),
+    pad(["top"],0.2em, showtable(result[3])),
+    )
+    body!(w, ui)
 end
 
 stuff = Node( :div,
