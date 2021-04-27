@@ -5,9 +5,9 @@
 using Plots
 using DataFrames 
 using TableView 
+using WebIO
 function tau(e,g,l,w)
     return (((1-w^(1-g))*l*u)/(a*(1-g)))^(1/(1-u))
-
 end 
 
 function  psi(e,g,l,w)
@@ -113,7 +113,7 @@ end
 
 function output2(w)
     result = table2()
-    ui = vbox( # put things one on top of the other
+    global ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
     pad(["top"],7em, showtable(result)),
     )
@@ -145,7 +145,7 @@ end
 
 function output3(w)
     result = table3()
-    ui = vbox( # put things one on top of the other
+    global ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
     pad(["top"],7em, showtable(result)),
     )
@@ -179,7 +179,7 @@ end
 
 function output4(w)
     result = table4()
-    ui = vbox( # put things one on top of the other
+    global ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
     pad(["top"],7em, showtable(result)),
     )
@@ -212,7 +212,7 @@ end
 
 function output5(w)
     result = table5()
-    ui = vbox( # put things one on top of the other
+    global ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
     pad(["top"],7em, showtable(result)),
     )
@@ -244,7 +244,7 @@ end
 
 function output6(w)
     result = table6()
-    ui = vbox( # put things one on top of the other
+    global ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
     pad(["top"],7em, showtable(result)),
     )
@@ -298,9 +298,17 @@ function output7(w)
     body!(w, ui)
 end
 
+stuff = Node( :div,
+           "Choose the visual you want to see !!",
+           style=Dict(
+               :color => "green",
+               :fontSize => "35px",
+          ),
+       )
+       
 ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
-    pad(["left"],6.9em, hbox()),
+    pad(["top"],15em, hbox(pad(["left"], 5em, stuff),)),
     
 )
 
