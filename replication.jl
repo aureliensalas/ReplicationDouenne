@@ -288,7 +288,7 @@ function output7(w)
     result = table7()
     ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
-    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = 1/3")),)),
+    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = \\frac{1}{3}")),)),
     pad(["top"],0.2em, showtable(result[1])),
     pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon → 1")),)),
     pad(["top"],0.2em, showtable(result[2])),
@@ -297,13 +297,6 @@ function output7(w)
     )
     body!(w, ui)
 end
-
-
-
-
-
-
-
 
 ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
