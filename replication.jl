@@ -290,6 +290,27 @@ function output7(w)
     body!(w, ui)
 end
 
+function table1() 
+    result = DataFrame(parameter =["Risk aversion coefficient","Intertemporal elast. of subst","Gross return from capital","Damages from moderate disasters","Damages from large disasters","Damages from extreme disasters","Ex ante probability of a moderate env. dis.","Ex ante probability of a large env. dis","Ex ante probability of an extreme env. dis.","Ratio non-enviromental / environmental disasters","St. dev. of normal shocks per year","Inverse of technology efficiency","Number of regions"],
+                       notation = ["𝛄","ϵ","A","1-ω_M","1-ω_L","1-ω_E","λ_M","λ_L","λ_E","δ","σ","α","H"], 
+                       value = ["3","1","0.069","5.2 %","15 %","40 %","3.07 %","1.064 %","0.3991 %","1","2%","0.25","3142"],
+    )
+    return result 
+end 
+
+function output1(w2)
+    result = table1() 
+    ui2 = vbox(
+        pad(["top"], 1.1em, hbox(pad(["left"], 21em, tb1),)),
+        pad(["top"], 5em, showtable(result)),
+        )
+    body!(w2,ui2)
+end 
+
+
+
+
+
 stuff = Node( :div,
            "Choose the visual you want to see 🙂!!",
            style=Dict(
@@ -299,7 +320,14 @@ stuff = Node( :div,
           ),
        )
        
-
+stuff2 = Node( :div,
+            "Click on the button above to see the parameters, the chosen notations and their respective values. 😉 ",
+            style=Dict(
+                :color => "green",
+                :fontSize => "40px",
+                :fontWeight => "600",
+          ),
+       )       
 
 tb2 = button("Table 2",
 style =Dict(:color => "yellow",
@@ -323,12 +351,19 @@ f1 = button("Figure 1",
 style =Dict(:color => "yellow",
 :backgroundColor => "green"))
 
+tb1 = button("Table 1",
+style =Dict(:color => "yellow",
+:backgroundColor => "green"))
+
+show_tb1 = on(n -> output1(w2),tb1) 
+
 show_tb2 = on(n -> output2(w),tb2) 
 show_tb3 = on(n -> output3(w),tb3) 
 show_tb4 = on(n -> output4(w),tb4) 
 show_tb5 = on(n -> output5(w),tb5) 
 show_tb6 = on(n -> output6(w),tb6) 
 show_tb7 = on(n -> output7(w),tb7)  
+
 
 
 ui = vbox( # put things one on top of the other
@@ -338,5 +373,12 @@ ui = vbox( # put things one on top of the other
 )
 w = Window() 
 
+ui2 = vbox(
+    pad(["top"], 1.1em, hbox(pad(["left"], 21em, tb1),)),
+    pad(["top"], 9em, hbox(pad(["left"], 5em, stuff2),)),
+)
+w2 = Window()
+
+body!(w2,ui2)
 body!(w,ui)
 
