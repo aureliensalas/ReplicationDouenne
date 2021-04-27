@@ -120,22 +120,42 @@ function output2(w)
     body!(w, ui)
 end
 
-function table3()
+#function table3()
+ #   result2 = DataFrame(scenario = ["Moderate disasters: \n l = $l_1, w = $w_1","Large disasters: \n l = $l_2, w = $w_2","Extreme disasters: \n l = $l_3, w = $w_3"])
+  #  for gamma in [1+1e-09, 3, 5, 10]
+   #     global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
+    #    mrt1 = round(mrt_lambda_gdp(e,gamma,l_1,w_1);digits=2) 
+     #   global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
+      #  mrt2 = round(mrt_lambda_gdp(e,gamma,l_2,w_2);digits=2)
+       # global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
+        #mrt3 = round(mrt_lambda_gdp(e,gamma,l_3,w_3); digits =2) 
+        #a3 = ["$mrt1", "$mrt2", "$mrt3"]
+        #columns = size(result2)[2] 
+        #colname = "γ = $gamma"
+        #insertcols!(result2, columns+1, colname=>a3)
+    #end 
+    #return result2
+#end
+
+function table3() 
     result2 = DataFrame(scenario = ["Moderate disasters: \n l = $l_1, w = $w_1","Large disasters: \n l = $l_2, w = $w_2","Extreme disasters: \n l = $l_3, w = $w_3"])
     for gamma in [1+1e-09, 3, 5, 10]
-        global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-        mrt1 = round(mrt_lambda_gdp(e,gamma,l_1,w_1);digits=2) 
-        global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-        mrt2 = round(mrt_lambda_gdp(e,gamma,l_2,w_2);digits=2)
-        global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-        mrt3 = round(mrt_lambda_gdp(e,gamma,l_3,w_3); digits =2) 
-        a3 = [mrt1, mrt2, mrt3]
-        columns = size(result2)[2] 
-        colname = "γ = $gamma"
+        col = []
+        for (l,w) in [(l_1,w_1), (l_2,w_2), (l_3,w_3)]
+            global r = rho_to_fit_growth(e,gamma,l,w,growth_target)
+            mrt1 = round(mrt_lambda_gdp(e,gamma,l,w);digits=2)
+            push!(col, mrt1)
+        end 
+        first = col[1]
+        second = col[2]
+        third = col[3]
+        a3 = ["$first","$second","$third"]
+        columns = size(result2)[2]
+        colname = "gamma = $gamma" 
         insertcols!(result2, columns+1, colname=>a3)
     end 
-    return result2
-end
+end 
+    
 
 function output3(w)
     result = table3()
@@ -197,7 +217,7 @@ function table5()
 end 
 
 function output5(w)
-    result = table3()
+    result = table5()
     global ui = vbox(
         hbox(),
         hbox(latex())
@@ -225,7 +245,7 @@ function table6()
     return result
 end 
 function output6(w)
-    result = table3()
+    result = table6()
     global ui = vbox(
         hbox(),
         hbox(latex())
