@@ -3,8 +3,8 @@
 
 # I. Import packages
 using Plots
-
-
+using DataFrames 
+using TableView 
 function tau(e,g,l,w)
     return (((1-w^(1-g))*l*u)/(a*(1-g)))^(1/(1-u))
 
@@ -95,59 +95,54 @@ tb7 = button("Table 7")
 f1 = button("Figure 1")
 
 function table2() 
+    result = DataFrame(variable = ["Share of production consumed","Share of production in risk-mitigation","Reduction in prob. of an env. disaster","Expected growth", "Expected aggregate damages from env. dis. (per year)"]) 
     for (l,w,scenario) in [(l_1,w_1,"moderate"),(l_2,w_2,"large"),(l_3,w_3,"extreme")]
         global r = rho_to_fit_growth(e,g,l,w,growth_target)
-        fpsi = psi(e,g,l,w)/a*100
-        ftau = tau(e,g,l,w)*100
-        ftau2 = tau(e,g,l,w)^(u*100)
-        fexp = expected_growth(e,g,l,w)*100
-        fexp2 = l*(1-(tau(e,g,l,w))^u)*(1-w)*100
-        latex("For $scenario scenario, disasters: \n") 
-        print("")
-        print("Share of production consumed: $fpsi % \n")
-        print("Share of production in risk-mitigation:', $ftau  % \n")
-        print("Reduction in prob. of an env. disaster:, $ftau2  % \n")
-        print("Expected growth: , $fexp % \n")
-        print("Expected aggregate damages from env. dis. (per year): $fexp2 % \n")
+        fpsi = round(psi(e,g,l,w)/a*100;digits=4)
+        ftau = round(tau(e,g,l,w)*100;digits=4)
+        ftau2 = round(tau(e,g,l,w)^u*100;digits=4)
+        fexp = round(expected_growth(e,g,l,w)*100;digits=4)
+        fexp2 = round(l*(1-(tau(e,g,l,w))^u)*(1-w)*100;digits=4)
+        a2 = ["$fpsi %","$ftau %","$ftau2 %","$fexp %", "$fexp2 %"]
+        columns = size(result)[2]
+        colname = "$scenario" 
+        insertcols!(result, columns+1, colname=>a2)
     end 
+    return result 
 end 
 
 function output2(w)
+    result = table2()
     global ui = vbox( # put things one on top of the other
-    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
-    pad(["left"],1em, hbox(latex("\\begin{tabular}
-    \\delta"))),
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
     )
     body!(w, ui)
 end
 
-
-
-function table3() 
-    result = list()
+function table3()
+    result2 = DataFrame(scenario = ["Moderate disasters: \n l = $l_1, w = $w_1","Large disasters: \n l = $l_2, w = $w_2","Extreme disasters: \n l = $l_3, w = $w_3"])
     for gamma in [1+1e-09, 3, 5, 10]
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-        mrt1 = mrt_lambda_gdp(e,gamma,l_1,w_1)
-        push!(result, mrt1)
-        print("with g= $gamma, w= $w_1, and l= $l_1, , $mrt1 \n")
+        mrt1 = round(mrt_lambda_gdp(e,gamma,l_1,w_1);digits=2) 
         global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-        mrt2 = mrt_lambda_gdp(e,gamma,l_2,w_2)
-        push!(result, mrt2)
-        print("with g= $gamma, w= $w_2, and l= $l_2, : $mrt2 \n")
+        mrt2 = round(mrt_lambda_gdp(e,gamma,l_2,w_2);digits=2)
         global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-        mrt3 = mrt_lambda_gdp(e,gamma,l_3,w_3)
-        push!(result, mrt3)
-        print("with g= $gamma, w=, $w_3, and l= $l_3, : $mrt3 \n")
+        mrt3 = round(mrt_lambda_gdp(e,gamma,l_3,w_3); digits =2) 
+        a3 = [mrt1, mrt2, mrt3]
+        columns = size(result2)[2] 
+        colname = "γ = $gamma"
+        insertcols!(result2, columns+1, colname=>a3)
     end 
-    return result
+    return result2
 end
 
 function output3(w)
     result = table3()
-    global ui = vbox(
-        hbox(),
-        hbox(latex())
-    ) 
+    global ui = vbox( # put things one on top of the other
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
+    )
     body!(w, ui)
 end
 
@@ -262,11 +257,11 @@ ui = vbox( # put things one on top of the other
 )
 
 show_tb2 = on(n -> output2(w),tb2) 
-show_tb3 = on(n -> output3(),tb3) 
-show_tb4 = on(n -> output4(),tb4) 
-show_tb5 = on(n -> output5(),tb5) 
-show_tb6 = on(n -> output6(),tb6) 
-show_tb7 = on(n -> output7(),tb7)  
+show_tb3 = on(n -> output3(w),tb3) 
+show_tb4 = on(n -> output4(w),tb4) 
+show_tb5 = on(n -> output5(w),tb5) 
+show_tb6 = on(n -> output6(w),tb6) 
+show_tb7 = on(n -> output7(w),tb7)  
 
 
 
