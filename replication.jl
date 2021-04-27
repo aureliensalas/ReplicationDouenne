@@ -299,11 +299,7 @@ stuff = Node( :div,
           ),
        )
        
-ui = vbox( # put things one on top of the other
-    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
-    pad(["top"],13em, hbox(pad(["left"], 4em, stuff),)),
-    
-)
+
 
 tb2 = button("Table 2",
 style =Dict(:color => "yellow",
@@ -335,7 +331,11 @@ show_tb6 = on(n -> output6(w),tb6)
 show_tb7 = on(n -> output7(w),tb7)  
 
 
-
+ui = vbox( # put things one on top of the other
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
+    pad(["top"],13em, hbox(pad(["left"], 4em, stuff),)),
+    
+)
 w = Window() 
 
 body!(w,ui)
