@@ -134,7 +134,7 @@ function table3()
         columns = size(result)[2]
         gamma_h = Int(round(gamma))
         if gamma_h == 1
-            colname = "γ tends to 1"
+            colname = "γ →  1"
         else 
             colname = "γ = $gamma_h" 
         end
@@ -155,30 +155,34 @@ end
 
 # Table IV: Marginal rate of substitution between proportionate changes in GDP and in disaster intensity.
 function table4()
-    result = list()
+    result = DataFrame(scenario = ["Moderate disaster","Large distaster","Extreme disaster"]) 
     for gamma in [1+1e-09, 3, 5, 10]
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-        mrt1 = mrt_omega_gdp(e,gamma,l_1,w_1)
-        push!(result, mrt1)
-        print("with g= $gamma, w= $w_1 and l= $l_1: $mrt1 \n")
+        mrt1 = round(mrt_omega_gdp(e,gamma,l_1,w_1);digits=2)
         global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-        mrt2 = mrt_omega_gdp(e,gamma,l_2,w_2)
-        push!(result, mrt1)
-        print("with g= $gamma, w= $w_2 and l= $l_2: $mrt2 \n")
+        mrt2 = round(mrt_omega_gdp(e,gamma,l_2,w_2);digits=2)
         global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-        mrt3 = mrt_omega_gdp(e,gamma,l_3,w_3)
-        push!(result, mrt1)
-        print("with g= $gamma, w= $w_3 and l= $l_3: $mrt3 \n")
+        mrt3 = round(mrt_omega_gdp(e,gamma,l_3,w_3);digits=2)
+        a2 = ["$mrt1","$mrt2","$mrt3"]
+        columns = size(result)[2]
+        gamma_h = Int(round(gamma))
+        if gamma_h == 1
+            colname = "γ →  1"
+        else 
+            colname = "γ = $gamma_h" 
+        end
+        insertcols!(result, columns+1, colname=>a2)
     end 
-    return result
-end
+    return result 
+end 
+    
 
 function output4(w)
     result = table4()
-    global ui = vbox(
-        hbox(),
-        hbox(latex())
-    ) 
+    ui = vbox( # put things one on top of the other
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
+    )
     body!(w, ui)
 end
 
@@ -217,29 +221,33 @@ end
 
 # Table VI: Welfare benefits of the policy.
 function table6()
+    result = DataFrame(scenario = ["Moderate disaster","Large distaster","Extreme disaster"]) 
     for gamma in [1+1e-09, 3, 5, 10]
-        result = list()
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-        luc1 = lucas_measure(e,gamma,l_1,w_1)*100
-        push!(result, luc1)
-        print("with g= $gamma, w= $w_1 and l= $l_1 : $luc1 % \n")
+        luc1 = round(lucas_measure(e,gamma,l_1,w_1)*100;digits=2)
         global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-        luc2 = lucas_measure(e,gamma,l_2,w_2)*100
-        push!(result, luc2)
-        print("with g= $gamma, w= $w_2 and l= $l_2 : $luc2 % \n")
+        luc2 = round(lucas_measure(e,gamma,l_2,w_2)*100;digits=2)
         global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-        luc3 = lucas_measure(e,gamma,l_3,w_3)*100
-        push!(result, luc3)
-        print("with g= $gamma, w= $w_3 and l= $l_3 : $luc3 % \n")
+        luc3 = round(lucas_measure(e,gamma,l_3,w_3)*100;digits=2)
+        a2 = ["$luc1 %","$luc2 %","$luc3 %"]
+        columns = size(result)[2]
+        gamma_h = Int(round(gamma))
+        if gamma_h == 1
+            colname = "γ →  1"
+        else 
+            colname = "γ = $gamma_h" 
+        end
+        insertcols!(result, columns+1, colname=>a2)
     end 
-    return result
+    return result 
 end 
+
 function output6(w)
     result = table6()
-    global ui = vbox(
-        hbox(),
-        hbox(latex())
-    ) 
+    ui = vbox( # put things one on top of the other
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
+    )
     body!(w, ui)
 end
 
