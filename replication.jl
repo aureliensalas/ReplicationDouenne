@@ -123,7 +123,7 @@ end
 
 function table3() 
     result = DataFrame(scenario = ["Moderate disaster","Large distaster","Extreme disaster"]) 
-    for gamma in [1.000000001, 3, 5, 10]
+    for gamma in [1+1e-09, 3, 5, 10]
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
         mrt1 = round(mrt_lambda_gdp(e,gamma,l_1,w_1);digits=2)
         global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
@@ -185,29 +185,33 @@ end
 
 # Table V: Optimal share of income spent in policy instrument.
 function table5()
-    result = list()
+    result = DataFrame(scenario = ["Moderate disaster: w= $w_1 and l= $l_1","Large distaster: w= $w_2 and l= $l_2","Extreme disaster: w= $w_3 and l= $l_3:"])
     for gamma in [1+1e-09, 3, 5, 10]
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
-        tau1 = tau(e,gamma,l_1,w_1)*100
-        push!(result, tau1)
-        print("with g=$gamma, w= $w_1 and l= $l_1 : $tau1 % \n")
+        tau1 = round(tau(e,gamma,l_1,w_1)*100; digits = 2)
         global r = rho_to_fit_growth(e,gamma,l_2,w_2,growth_target)
-        tau2 = tau(e,gamma,l_2,w_2)*100
-        push!(result, tau2)
-        print("with g=$gamma, w= $w_2 and l= $l_2: $tau2 % \n")
+        tau2 = round(tau(e,gamma,l_2,w_2)*100; digits = 2)
         global r = rho_to_fit_growth(e,gamma,l_3,w_3,growth_target)
-        tau3 = tau(e,gamma,l_3,w_3)*100
-        push!(result, tau3)
-        print("with g= $gamma, w= $w_3 and l= $l_3: $tau3 % \n")
-    end
+        tau3 = round(tau(e,gamma,l_3,w_3)*100; digits = 2)
+        a2 = ["$tau1 %","$tau2 %","$tau3 %"]
+        columns = size(result)[2]
+        gamma_h = Int(round(gamma))
+        if gamma_h == 1
+            colname = "γ tends to 1"
+        else 
+            colname = "γ = $gamma_h" 
+        end
+        insertcols!(result, columns+1, colname=>a2)
+    end 
+    return result 
 end 
 
 function output5(w)
     result = table5()
-    global ui = vbox(
-        hbox(),
-        hbox(latex())
-    ) 
+    ui = vbox( # put things one on top of the other
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
+    )
     body!(w, ui)
 end
 
