@@ -122,7 +122,7 @@ end
 
 
 function table3() 
-    result = DataFrame(scenario = ["Moderate disaster","Large distaster","Extreme disaster"]) 
+    result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
     for gamma in [1+1e-09, 3, 5, 10]
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
         mrt1 = round(mrt_lambda_gdp(e,gamma,l_1,w_1);digits=2)
@@ -155,7 +155,7 @@ end
 
 # Table IV: Marginal rate of substitution between proportionate changes in GDP and in disaster intensity.
 function table4()
-    result = DataFrame(scenario = ["Moderate disaster","Large distaster","Extreme disaster"]) 
+    result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
     for gamma in [1+1e-09, 3, 5, 10]
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
         mrt1 = round(mrt_omega_gdp(e,gamma,l_1,w_1);digits=2)
@@ -189,7 +189,7 @@ end
 
 # Table V: Optimal share of income spent in policy instrument.
 function table5()
-    result = DataFrame(scenario = ["Moderate disaster: w= $w_1 and l= $l_1","Large distaster: w= $w_2 and l= $l_2","Extreme disaster: w= $w_3 and l= $l_3:"])
+    result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"])
     for gamma in [1+1e-09, 3, 5, 10]
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
         tau1 = round(tau(e,gamma,l_1,w_1)*100; digits = 2)
@@ -221,7 +221,7 @@ end
 
 # Table VI: Welfare benefits of the policy.
 function table6()
-    result = DataFrame(scenario = ["Moderate disaster","Large distaster","Extreme disaster"]) 
+    result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
     for gamma in [1+1e-09, 3, 5, 10]
         global r = rho_to_fit_growth(e,gamma,l_1,w_1,growth_target)
         luc1 = round(lucas_measure(e,gamma,l_1,w_1)*100;digits=2)
