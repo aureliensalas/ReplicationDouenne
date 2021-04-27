@@ -201,7 +201,7 @@ function table5()
         columns = size(result)[2]
         gamma_h = Int(round(gamma))
         if gamma_h == 1
-            colname = "γ tends to 1"
+            colname = "γ →  1"
         else 
             colname = "γ = $gamma_h" 
         end
