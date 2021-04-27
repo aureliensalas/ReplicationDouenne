@@ -86,14 +86,6 @@ u = 0.25
 growth_target = 0.0175
 r = 0
 
-tb2 = button("Table 2")
-tb3 = button("Table 3")
-tb4 = button("Table 4")
-tb5 = button("Table 5")
-tb6 = button("Table 6")
-tb7 = button("Table 7")
-f1 = button("Figure 1")
-
 function table2() 
     result = DataFrame(variable = ["Share of production consumed","Share of production in risk-mitigation","Reduction in prob. of an env. disaster","Expected growth", "Expected aggregate damages from env. dis. (per year)"]) 
     for (l,w,scenario) in [(l_1,w_1,"moderate"),(l_2,w_2,"large"),(l_3,w_3,"extreme")]
@@ -134,7 +126,7 @@ function table3()
         columns = size(result)[2]
         gamma_h = Int(round(gamma))
         if gamma_h == 1
-            colname = "γ →  1"
+            colname = "γ ⟶  1"
         else 
             colname = "γ = $gamma_h" 
         end
@@ -167,7 +159,7 @@ function table4()
         columns = size(result)[2]
         gamma_h = Int(round(gamma))
         if gamma_h == 1
-            colname = "γ →  1"
+            colname = "γ ⟶  1"
         else 
             colname = "γ = $gamma_h" 
         end
@@ -201,7 +193,7 @@ function table5()
         columns = size(result)[2]
         gamma_h = Int(round(gamma))
         if gamma_h == 1
-            colname = "γ →  1"
+            colname = "γ ⟶ 1"
         else 
             colname = "γ = $gamma_h" 
         end
@@ -233,7 +225,7 @@ function table6()
         columns = size(result)[2]
         gamma_h = Int(round(gamma))
         if gamma_h == 1
-            colname = "γ →  1"
+            colname = "γ ⟶ 1"
         else 
             colname = "γ = $gamma_h" 
         end
@@ -264,9 +256,9 @@ function table7()
             a2 = ["$r1","$r2","$r3"]
             gamma_h = Int(round(gamma))
             if gamma_h == 1 
-                colname = "γ → 1"
+                colname = "𝛄 → 1"
             else 
-                colname = "γ = $gamma_h"
+                colname = "𝛄 = $gamma_h"
             end
             if epsilon == 1/3 
                 columns = size(result)[2]
@@ -290,7 +282,7 @@ function output7(w)
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
     pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = \\frac{1}{3}")),)),
     pad(["top"],0.2em, showtable(result[1])),
-    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon → 1")),)),
+    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon ⟶ 1")),)),
     pad(["top"],0.2em, showtable(result[2])),
     pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = 1.5")),)),
     pad(["top"],0.2em, showtable(result[3])),
@@ -299,18 +291,41 @@ function output7(w)
 end
 
 stuff = Node( :div,
-           "Choose the visual you want to see !!",
+           "Choose the visual you want to see 🙂!!",
            style=Dict(
                :color => "green",
-               :fontSize => "35px",
+               :fontSize => "40px",
+               :fontWeight => "600",
           ),
        )
        
 ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
-    pad(["top"],15em, hbox(pad(["left"], 5em, stuff),)),
+    pad(["top"],13em, hbox(pad(["left"], 4em, stuff),)),
     
 )
+
+tb2 = button("Table 2",
+style =Dict(:color => "yellow",
+:backgroundColor => "green"))
+tb3 = button("Table 3",
+style =Dict(:color => "red",
+:backgroundColor => "green"))
+tb4 = button("Table 4",
+style =Dict(:color => "yellow",
+:backgroundColor => "green"))
+tb5 = button("Table 5",
+style =Dict(:color => "red",
+:backgroundColor => "green"))
+tb6 = button("Table 6",
+style =Dict(:color => "yellow",
+:backgroundColor => "green"))
+tb7 = button("Table 7",
+style =Dict(:color => "red",
+:backgroundColor => "green"))
+f1 = button("Figure 1",
+style =Dict(:color => "yellow",
+:backgroundColor => "green"))
 
 show_tb2 = on(n -> output2(w),tb2) 
 show_tb3 = on(n -> output3(w),tb3) 
