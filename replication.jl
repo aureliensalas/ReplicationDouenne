@@ -6,6 +6,8 @@ using Plots
 using DataFrames 
 using TableView 
 using WebIO
+using Latexify
+Latexify.set_default(; starred = true) 
 function tau(e,g,l,w)
     return (((1-w^(1-g))*l*u)/(a*(1-g)))^(1/(1-u))
 end 
@@ -298,6 +300,8 @@ function table1()
     return result 
 end 
 
+
+
 function output1(w2)
     result = table1() 
     ui2 = vbox(
@@ -306,6 +310,39 @@ function output1(w2)
         )
     body!(w2,ui2)
 end 
+
+function inverse(x)
+    return 1/x 
+end 
+
+IES2 = [1/4, 1/3, 1/2, 1, 2, 3]
+RRA2 = [6, 5, 4, 3, 2, 1]
+IES = string.(IES2)
+RRA = string.(RRA2)
+e_inverse = (broadcast(inverse,collect(range(4,1;step= -0.01) .- 0.001)))
+e_normal = (collect(range(1,3; step =0.01) .+ 0.001))
+e = vcat(e_inverse,e_normal)
+g = collect(range(6,1;step = -0.01) .+ 0.05)  
+
+values_heatmap = [effect_disasters_expected_growth(eps,gam, l_1, w_1) for eps in e, gam in g]
+
+ui3 = heatmap(values_heatmap, xticks=(1:size(values_heatmap,2),IES), yticks=(1:size(values_heatmap,1),RRA), c=:thermal)
+
+
+w3 = Window() 
+body!(w3,ui3)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
