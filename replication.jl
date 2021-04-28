@@ -327,7 +327,7 @@ function figure1()
     for (l,w,scenario) in [(l_1,w_1,"moderate"),(l_2,w_2,"large"),(l_3,w_3,"extreme")]
         values_heatmap = [effect_disasters_expected_growth(eps,gam, l, w) for gam in g, eps in e]
         plot = heatmap(values_heatmap,
-            xticks=(1:100:size(values_heatmap,2),IES), yticks=(1:100:size(values_heatmap,1),RRA),
+            xticks=(1:100:size(values_heatmap,2),IES2), yticks=(1:100:size(values_heatmap,1),RRA2),
             c=cgrad(:seismic), clims = (-0.012, 0.012),
             title = "Heatmap for $scenario disaster",
             xlabel = "Intertemporal Elasticity of Substitution (ϵ)", ylabel = "Relative Risk Aversion (γ)",
