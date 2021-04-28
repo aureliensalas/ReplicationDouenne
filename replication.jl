@@ -315,38 +315,39 @@ function inverse(x)
     return 1/x 
 end 
 
-IES2 = [1/4, 1/3, 1/2, 1, 2, 3]
-RRA2 = [6, 5, 4, 3, 2, 1]
-IES = string.(IES2)
-RRA = string.(RRA2)
-e_inverse = (broadcast(inverse,collect(range(4,1;step= -0.01) .- 0.001)))
-e_normal = (collect(range(1,3; step =0.01) .+ 0.001))
-e = vcat(e_inverse,e_normal)
-g = collect(range(6,1;step = -0.01) .+ 0.05)  
+function figure1()
+    e_inverse = (broadcast(inverse,collect(range(4,1;step= -0.01) .- 0.001)))
+    e_normal = (collect(range(1,3; step =0.01) .+ 0.001))
+    e = vcat(e_inverse,e_normal)
+    g = collect(range(1,6;step = 0.01) .+ 0.05)  
 
-values_heatmap = [effect_disasters_expected_growth(eps,gam, l_1, w_1) for eps in e, gam in g]
+    IES2 = ["1/4", "1/3", "1/2", "1", "2", "3"]
+    RRA2 = ["1", "2","3", "4", "5", "6"]
+    plots = []
+    for (l,w,scenario) in [(l_1,w_1,"moderate"),(l_2,w_2,"large"),(l_3,w_3,"extreme")]
+        values_heatmap = [effect_disasters_expected_growth(eps,gam, l, w) for gam in g, eps in e]
+        plot = heatmap(values_heatmap,
+            xticks=(1:100:size(values_heatmap,2),IES), yticks=(1:100:size(values_heatmap,1),RRA),
+            c=cgrad(:seismic), clims = (-0.012, 0.012),
+            title = "Heatmap for $scenario disaster",
+            xlabel = "Intertemporal Elasticity of Substitution (ϵ)", ylabel = "Relative Risk Aversion (γ)",
+            right_margin = 5Plots.mm
+            )
+        push!(plots, plot)
+    end
+    return plots 
+end
 
-ui3 = heatmap(values_heatmap, xticks=(1:size(values_heatmap,2),IES), yticks=(1:size(values_heatmap,1),RRA), c=:thermal)
-
-
-w3 = Window() 
-body!(w3,ui3)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function output8(w)
+    result = figure1()
+    ui = vbox( # put things one on top of the other
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],1em, result[1]),
+    pad(["top"],1em, result[2]),
+    pad(["top"],1em, result[3]),
+    )
+    body!(w, ui)
+end
 
 stuff = Node( :div,
            "Choose the visual you want to see 🙂!!",
@@ -399,7 +400,8 @@ show_tb3 = on(n -> output3(w),tb3)
 show_tb4 = on(n -> output4(w),tb4) 
 show_tb5 = on(n -> output5(w),tb5) 
 show_tb6 = on(n -> output6(w),tb6) 
-show_tb7 = on(n -> output7(w),tb7)  
+show_tb7 = on(n -> output7(w),tb7) 
+show_fig = on(n -> output8(w), f1)
 
 
 
