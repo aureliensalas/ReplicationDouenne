@@ -6,8 +6,7 @@ using Plots
 using DataFrames 
 using TableView 
 using WebIO
-using Latexify
-Latexify.set_default(; starred = true) 
+
 function tau(e,g,l,w)
     return (((1-w^(1-g))*l*u)/(a*(1-g)))^(1/(1-u))
 end 
@@ -294,7 +293,7 @@ end
 
 function table1() 
     result = DataFrame(parameter =["Risk aversion coefficient","Intertemporal elast. of subst","Gross return from capital","Damages from moderate disasters","Damages from large disasters","Damages from extreme disasters","Ex ante probability of a moderate env. dis.","Ex ante probability of a large env. dis","Ex ante probability of an extreme env. dis.","Ratio non-enviromental / environmental disasters","St. dev. of normal shocks per year","Inverse of technology efficiency","Number of regions"],
-                       notation = ["𝛄","ϵ","A","1-ω_M","1-ω_L","1-ω_E","λ_M","λ_L","λ_E","δ","σ","α","H"], 
+                       notation = ["γ","ϵ","A","1-ω_M","1-ω_L","1-ω_E","λ_M","λ_L","λ_E","δ","σ","α","H"], 
                        value = ["3","1","0.069","5.2 %","15 %","40 %","3.07 %","1.064 %","0.3991 %","1","2%","0.25","3142"],
     )
     return result 
@@ -404,7 +403,6 @@ show_tb7 = on(n -> output7(w),tb7)
 show_fig = on(n -> output8(w), f1)
 
 
-
 ui = vbox( # put things one on top of the other
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
     pad(["top"],13em, hbox(pad(["left"], 4em, stuff),)),
@@ -420,4 +418,3 @@ w2 = Window()
 
 body!(w2,ui2)
 body!(w,ui)
-
