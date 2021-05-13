@@ -1,12 +1,14 @@
 # Replication of the paper "Disaster risks, disaster strikes, and economic growth: The role of preferences" by T.Douenne (2020).
 # By Rémi Hannotel and Aurélien Salas, for the Numerical Methods class.
 
-# I. Import packages
+#### I. Import packages
 using Plots
 using DataFrames 
 using TableView 
-using WebIO
+using Interact 
+using Blink 
 
+#### II. Define functions 
 function tau(e,g,l,w)
     return (((1-w^(1-g))*l*u)/(a*(1-g)))^(1/(1-u))
 end 
@@ -66,12 +68,8 @@ function rho_to_fit_growth(e,g,l,w,growth_target)
     return 1/e * (group_1 - group_2 - (1-e)*(group_1 - group_3 - group_4) - growth_target)
 end
 
-
-# IV. Apply functions to obtain tables and figures:
-
-using Interact 
-using Blink 
-# Table I: Parameters used in the calibration (main specification).
+#### III. Apply functions to obtain tables and figures :
+## Table I : Parameters used in the calibration (main specification).
 g = 3.0
 e = 1+1e-09
 a = 0.069
@@ -87,6 +85,15 @@ u = 0.25
 growth_target = 0.0175
 r = 0
 
+function table1() 
+    result = DataFrame(parameter =["Risk aversion coefficient","Intertemporal elast. of subst","Gross return from capital","Damages from moderate disasters","Damages from large disasters","Damages from extreme disasters","Ex ante probability of a moderate env. dis.","Ex ante probability of a large env. dis","Ex ante probability of an extreme env. dis.","Ratio non-enviromental / environmental disasters","St. dev. of normal shocks per year","Inverse of technology efficiency","Number of regions"],
+                       notation = ["γ","ϵ","A","1-ω_M","1-ω_L","1-ω_E","λ_M","λ_L","λ_E","δ","σ","α","H"], 
+                       value = ["3","1","0.069","5.2 %","15 %","40 %","3.07 %","1.064 %","0.3991 %","1","2%","0.25","3142"],
+    )
+    return result 
+end 
+
+## Table II : Variables computed at parameters’ baseline value.
 function table2() 
     result = DataFrame(variable = ["Share of production consumed","Share of production in risk-mitigation","Reduction in prob. of an env. disaster","Expected growth", "Expected aggregate damages from env. dis. (per year)"]) 
     for (l,w,scenario) in [(l_1,w_1,"moderate"),(l_2,w_2,"large"),(l_3,w_3,"extreme")]
@@ -104,16 +111,7 @@ function table2()
     return result 
 end 
 
-function output2(w)
-    result = table2()
-    global ui = vbox( # put things one on top of the other
-    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
-    pad(["top"],7em, showtable(result)),
-    )
-    body!(w, ui)
-end
-
-
+## Table III : Marginal rate of substitution between proportionate changes in GDP and in disaster probability.
 function table3() 
     result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
     for gamma in [1+1e-09, 3, 5, 10]
@@ -136,17 +134,7 @@ function table3()
     return result 
 end 
 
-function output3(w)
-    result = table3()
-    global ui = vbox( # put things one on top of the other
-    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
-    pad(["top"],7em, showtable(result)),
-    )
-    body!(w, ui)
-end
-
-
-# Table IV: Marginal rate of substitution between proportionate changes in GDP and in disaster intensity.
+## Table IV : Marginal rate of substitution between proportionate changes in GDP and in disaster intensity.
 function table4()
     result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
     for gamma in [1+1e-09, 3, 5, 10]
@@ -168,19 +156,8 @@ function table4()
     end 
     return result 
 end 
-    
 
-function output4(w)
-    result = table4()
-    global ui = vbox( # put things one on top of the other
-    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
-    pad(["top"],7em, showtable(result)),
-    )
-    body!(w, ui)
-end
-
-
-# Table V: Optimal share of income spent in policy instrument.
+## Table V : Optimal share of income spent in policy instrument. 
 function table5()
     result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"])
     for gamma in [1+1e-09, 3, 5, 10]
@@ -203,16 +180,7 @@ function table5()
     return result 
 end 
 
-function output5(w)
-    result = table5()
-    global ui = vbox( # put things one on top of the other
-    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
-    pad(["top"],7em, showtable(result)),
-    )
-    body!(w, ui)
-end
-
-# Table VI: Welfare benefits of the policy.
+## Table VI : Welfare benefits of the policy.
 function table6()
     result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
     for gamma in [1+1e-09, 3, 5, 10]
@@ -235,16 +203,7 @@ function table6()
     return result 
 end 
 
-function output6(w)
-    result = table6()
-    global ui = vbox( # put things one on top of the other
-    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
-    pad(["top"],7em, showtable(result)),
-    )
-    body!(w, ui)
-end
-
-# Table VII : Calibration of time impatience to match a 1.75% expected growth rate.
+## Table VII : Calibration of time impatience to match a 1.75% expected growth rate.
 function table7()
     result = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
     result2 = DataFrame(scenario = ["Moderate disaster (w= $w_1 and l= $l_1)","Large disaster (w= $w_2 and l= $l_2)","Extreme disaster (w= $w_3 and l= $l_3)"]) 
@@ -277,45 +236,9 @@ function table7()
     return [result, result2, result3]
 end 
 
-function output7(w)
-    result = table7()
-    ui = vbox( # put things one on top of the other
-    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
-    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = \\frac{1}{3}")),)),
-    pad(["top"],0.2em, showtable(result[1])),
-    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon ⟶ 1")),)),
-    pad(["top"],0.2em, showtable(result[2])),
-    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = 1.5")),)),
-    pad(["top"],0.2em, showtable(result[3])),
-    )
-    body!(w, ui)
-end
-
-function table1() 
-    result = DataFrame(parameter =["Risk aversion coefficient","Intertemporal elast. of subst","Gross return from capital","Damages from moderate disasters","Damages from large disasters","Damages from extreme disasters","Ex ante probability of a moderate env. dis.","Ex ante probability of a large env. dis","Ex ante probability of an extreme env. dis.","Ratio non-enviromental / environmental disasters","St. dev. of normal shocks per year","Inverse of technology efficiency","Number of regions"],
-                       notation = ["γ","ϵ","A","1-ω_M","1-ω_L","1-ω_E","λ_M","λ_L","λ_E","δ","σ","α","H"], 
-                       value = ["3","1","0.069","5.2 %","15 %","40 %","3.07 %","1.064 %","0.3991 %","1","2%","0.25","3142"],
-    )
-    return result 
-end 
-
-
-
-function output1(w2)
-    result = table1() 
-    ui2 = vbox(
-        pad(["top"], 1.1em, hbox(pad(["left"], 21em, tb1),)),
-        pad(["top"], 5em, showtable(result)),
-        )
-    body!(w2,ui2)
-end 
-
-function inverse(x)
-    return 1/x 
-end 
-
+## Figure 1 : Difference between long-run growth in a disaster vs. disaster free economy.
 function figure1()
-    e_inverse = (broadcast(inverse,collect(range(4,1;step= -0.01) .- 0.001)))
+    e_inverse = (broadcast(x -> 1/x,collect(range(4,1;step= -0.01) .- 0.001)))
     e_normal = (collect(range(1,3; step =0.01) .+ 0.001))
     e = vcat(e_inverse,e_normal)
     g = collect(range(1,6;step = 0.01) .+ 0.05)  
@@ -337,9 +260,86 @@ function figure1()
     return plots 
 end
 
+#### IV. Write functions to display a given table or figure in a window 
+## Table 1
+function output1(w2)
+    result = table1() 
+    ui2 = vbox(
+        pad(["top"], 1.1em, hbox(pad(["left"], 21em, tb1),)),
+        pad(["top"], 5em, showtable(result)),
+        )
+    body!(w2,ui2)
+end 
+
+## Table 2
+function output2(w)
+    result = table2()
+    global ui = vbox( 
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
+    )
+    body!(w, ui)
+end
+
+## Table 3
+function output3(w)
+    result = table3()
+    global ui = vbox( 
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
+    )
+    body!(w, ui)
+end
+
+## Table 4
+function output4(w)
+    result = table4()
+    global ui = vbox( 
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
+    )
+    body!(w, ui)
+end
+
+## Table 5
+function output5(w)
+    result = table5()
+    global ui = vbox( 
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
+    )
+    body!(w, ui)
+end
+
+## Table 6
+function output6(w)
+    result = table6()
+    global ui = vbox( 
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],7em, showtable(result)),
+    )
+    body!(w, ui)
+end
+
+## Table 7
+function output7(w)
+    result = table7()
+    ui = vbox( 
+    pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
+    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = \\frac{1}{3}")),)),
+    pad(["top"],0.2em, showtable(result[1])),
+    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon ⟶ 1")),)),
+    pad(["top"],0.2em, showtable(result[2])),
+    pad(["top"],1em, hbox(pad(["left"],22em,latex("\\epsilon = 1.5")),)),
+    pad(["top"],0.2em, showtable(result[3])),
+    )
+    body!(w, ui)
+end
+
+## Figure 1 
 function output8(w)
     result = figure1()
-    ui = vbox( # put things one on top of the other
+    ui = vbox( 
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1),)),
     pad(["top"],1em, result[1]),
     pad(["top"],1em, result[2]),
@@ -348,7 +348,9 @@ function output8(w)
     body!(w, ui)
 end
 
-stuff = Node( :div,
+#### V. Defining objects to be displayed 
+## Message for the window displaying the results 
+message = Node( :div,
            "Choose the visual you want to see 🙂!!",
            style=Dict(
                :color => "green",
@@ -356,8 +358,8 @@ stuff = Node( :div,
                :fontWeight => "600",
           ),
        )
-       
-stuff2 = Node( :div,
+## Message for the window displaying the parameters       
+message2 = Node( :div,
             "Click on the button above to see the parameters, the chosen notations and their respective values. 😉 ",
             style=Dict(
                 :color => "green",
@@ -365,7 +367,10 @@ stuff2 = Node( :div,
                 :fontWeight => "600",
           ),
        )       
-
+## Interactive buttons 
+tb1 = button("Table 1",
+style =Dict(:color => "yellow",
+:backgroundColor => "green"))
 tb2 = button("Table 2",
 style =Dict(:color => "yellow",
 :backgroundColor => "green"))
@@ -388,12 +393,8 @@ f1 = button("Figure 1",
 style =Dict(:color => "yellow",
 :backgroundColor => "green"))
 
-tb1 = button("Table 1",
-style =Dict(:color => "yellow",
-:backgroundColor => "green"))
-
+## Showing the buttons in the windows 
 show_tb1 = on(n -> output1(w2),tb1) 
-
 show_tb2 = on(n -> output2(w),tb2) 
 show_tb3 = on(n -> output3(w),tb3) 
 show_tb4 = on(n -> output4(w),tb4) 
@@ -402,19 +403,18 @@ show_tb6 = on(n -> output6(w),tb6)
 show_tb7 = on(n -> output7(w),tb7) 
 show_fig = on(n -> output8(w), f1)
 
-
-ui = vbox( # put things one on top of the other
+#### VI. Creating the interface 
+ui = vbox( 
     pad(["top"],1.1em,hbox(pad(["left"],1em,tb2),pad(["left"],1em,tb3), pad(["left"],1em,tb4), pad(["left"],1em,tb5), pad(["left"],1em, tb6),pad(["left"],1em, tb7), pad(["left"],1em, f1))),
-    pad(["top"],13em, hbox(pad(["left"], 4em, stuff),)),
+    pad(["top"],13em, hbox(pad(["left"], 4em, message),)),
     
 )
-w = Window() 
+w = Window() # Window that shows the results 
 
 ui2 = vbox(
     pad(["top"], 1.1em, hbox(pad(["left"], 21em, tb1),)),
-    pad(["top"], 9em, hbox(pad(["left"], 5em, stuff2),)),
+    pad(["top"], 9em, hbox(pad(["left"], 5em, message2),)),
 )
-w2 = Window()
-
+w2 = Window() # Window that shows the parameters 
 body!(w2,ui2)
-body!(w,ui)
+body!(w,ui) 
